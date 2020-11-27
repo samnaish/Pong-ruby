@@ -1,13 +1,15 @@
 require 'ruby2d'
 
+require_relative 'paddle.rb'
+
 class Ball
     HEIGHT = 25
     attr_reader :shape
     def initialize
         @x = 320
         @y = 400
-        @y_velocity = 1
-        @x_velocity = -1
+        @y_velocity = 3
+        @x_velocity = -3
     end
 
     def move
@@ -31,14 +33,18 @@ class Ball
         @x_velocity = -@x_velocity
     end
 
+    def y_middle
+         @y + (HEIGHT / 2)
+    end
+
     private
 
     def hit_bottom?
         @y + HEIGHT >= Window.height
     end
 
-      def hit_top?
-        @y <= 0
-      end
+    def hit_top?
+    @y <= 0
+    end
 
 end

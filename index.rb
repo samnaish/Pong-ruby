@@ -12,16 +12,18 @@ ball = Ball.new()
 update do
     clear
 
-    if player.hit_ball?(ball)
+    if player.hit_ball?(ball) || oponent.hit_ball?(ball)
         ball.bounce
     end
 
     player.move
     player.draw
     
+    oponent.track_ball(ball)
     oponent.draw
-    ball.draw
+
     ball.move
+    ball.draw
 end
 
 on :key_down do |event|

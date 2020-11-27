@@ -1,5 +1,7 @@
 require 'ruby2d'
 
+require_relative 'ball.rb'
+
 class Paddle
     HEIGHT = 150
 
@@ -11,7 +13,7 @@ class Paddle
         if side == :left
             @x = 40      
         else
-           @x = 620 
+           @x = 600 
         end
     end
 
@@ -39,7 +41,19 @@ class Paddle
         end 
     end
 
+  def track_ball(ball)
+    if ball.y_middle > y_middle
+      @y += @speed
+    elsif ball.y_middle < y_middle
+      @y -= @speed
+    end
+  end
+
     private
+
+    def y_middle
+        @y + (HEIGHT / 2)
+    end
 
     def max_y
         Window.height - HEIGHT
