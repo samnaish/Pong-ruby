@@ -37,6 +37,10 @@ class Ball
          @y + (HEIGHT / 2)
     end
 
+    def out_of_bounds?
+        @x <= 0 || @shape.x2 >= Window.width
+    end
+
     private
 
     def hit_bottom?

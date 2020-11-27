@@ -24,6 +24,11 @@ update do
 
     ball.move
     ball.draw
+
+    if ball.out_of_bounds?
+        ball = Ball.new
+    end
+
 end
 
 on :key_down do |event|
