@@ -4,12 +4,14 @@ require_relative 'paddle.rb'
 
 class Ball
     HEIGHT = 25
-    attr_reader :shape
-    def initialize
+    attr_reader :shape, :x_velocity, :y_velocity
+
+    def initialize(speed)
         @x = 320
         @y = 400
-        @y_velocity = 3
-        @x_velocity = -3
+        @speed = speed
+        @y_velocity = speed
+        @x_velocity = -speed
     end
 
     def move
@@ -29,12 +31,28 @@ class Ball
         )
     end
 
-    def bounce
-        @x_velocity = -@x_velocity
+    def bounce(paddle)
+        if @last_hit_side != paddle.side
+            position = ((@shape.y1 - paddle.y1) / Paddle::HEIGHT.to_f)
+            angle = position.clamp(0.2, 0.8) * Math::PI
+
+            puts "position #{position}"
+
+            if paddle.side == :left
+                @x_velocity = Math.sin(angle) * @speed
+                @y_velocity = -Math.cos(angle) * @speed
+            else
+                @x_velocity = -Math.sin(angle) * @speed
+                @y_velocity = -Math.cos(angle) * @speed
+            end
+    end
+      @last_hit_side = paddle.side
+    #   @x_velocity = -@x_velocity
     end
 
     def y_middle
-         @y + (HEIGHT / 2)
+        height = @y + (HEIGHT / 2)
+        return height
     end
 
     def out_of_bounds?
@@ -44,11 +62,15 @@ class Ball
     private
 
     def hit_bottom?
-        @y + HEIGHT >= Window.height
+        hit_bottom = @y + HEIGHT >= Window.height
+        PONG_SOUND.play
+        return hit_bottom
     end
 
     def hit_top?
-    @y <= 0
+        PONG_SOUND.play
+        hit_top = @y <= 0
+        return hit_top
     end
 
 end

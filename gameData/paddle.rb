@@ -6,8 +6,11 @@ class Paddle
     HEIGHT = 150
 
     attr_writer :direction
-    def initialize(side, speed)
-        @speed = speed
+    attr_reader :side
+
+    def initialize(side, movement_speed)
+        @side = side
+        @movement_speed = movement_speed
         @direction = nil
         @y = 200
         if side == :left
@@ -19,9 +22,9 @@ class Paddle
 
     def move
         if @direction == :up
-            @y = [@y - @speed, 0].max
+            @y = [@y - @movement_speed, 0].max
         elsif @direction == :down
-            @y = [@y + @speed, max_y].min
+            @y = [@y + @movement_speed, max_y].min
         end
     end
 
@@ -43,20 +46,26 @@ class Paddle
 
   def track_ball(ball)
     if ball.y_middle > y_middle
-      @y += @speed
+      @y += @movement_speed
     elsif ball.y_middle < y_middle
-      @y -= @speed
+      @y -= @movement_speed
     end
   end
+
+    def y1
+        @shape.y1
+    end
 
     private
 
     def y_middle
-        @y + (HEIGHT / 2)
+        height = @y + (HEIGHT / 2)
+        return height
     end
 
     def max_y
-        Window.height - HEIGHT
+        max = Window.height - HEIGHT
+        return max
     end
 
 end
